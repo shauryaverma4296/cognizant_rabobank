@@ -1,10 +1,14 @@
 %{
+  "csv": {:hex, :csv, "3.0.5", "3c1455127e92de8845806db89554ad7d45e0212974be41dd9c38a5c881861713", [:mix], [], "hexpm", "cbbe5455c93df5f3f2943e995e28b7a8808361ba34cf3e44267d77a01eaf1609"},
   "decimal": {:hex, :decimal, "2.0.0", "a78296e617b0f5dd4c6caf57c714431347912ffb1d0842e998e9792b5642d697", [:mix], [], "hexpm", "34666e9c55dea81013e77d9d87370fe6cb6291d1ef32f46a1600230b1d44f577"},
+  "elixir_map_to_xml": {:hex, :elixir_map_to_xml, "0.1.0", "938ece68237e5aaccbe1d2b1146f850cda7ad4ac7d4106026d6b3d4c2086bce9", [:mix], [{:xml_builder, "~> 2.1.1", [hex: :xml_builder, repo: "hexpm", optional: false]}], "hexpm", "fef8cc1c57d9cf442491e6b94cf7ed606fd1c04dbdf0ce9626066a78c0f6a2f5"},
   "erlsom": {:hex, :erlsom, "1.5.1", "c8fe2babd33ff0846403f6522328b8ab676f896b793634cfe7ef181c05316c03", [:rebar3], [], "hexpm", "7965485494c5844dd127656ac40f141aadfa174839ec1be1074e7edf5b4239eb"},
+  "poison": {:hex, :poison, "5.0.0", "d2b54589ab4157bbb82ec2050757779bfed724463a544b6e20d79855a9e43b24", [:mix], [{:decimal, "~> 2.0", [hex: :decimal, repo: "hexpm", optional: true]}], "hexpm", "11dc6117c501b80c62a7594f941d043982a1bd05a1184280c0d9166eb4d8d3fc"},
   "protocol_ex": {:hex, :protocol_ex, "0.4.4", "c9717d1c0bdabe37d7653965dc02e78580d0d06a1f86d737b7941b55241f70d6", [:mix], [], "hexpm", "2b78ed0e5ec76f62b0debaf92dc8e795551cdaf7fc22b8816b3d57225020ac99"},
   "rdf": {:hex, :rdf, "1.1.0", "79659bab0931c88e813b40d0346206a5d6cf878de1a8126a72887ca060c59dbe", [:mix], [{:decimal, "~> 1.5 or ~> 2.0", [hex: :decimal, repo: "hexpm", optional: false]}, {:elixir_uuid, "~> 1.2", [hex: :elixir_uuid, repo: "hexpm", optional: true]}, {:protocol_ex, "~> 0.4.4", [hex: :protocol_ex, repo: "hexpm", optional: false]}], "hexpm", "81fc8c72016360e038c67c62aa84a3b5ec15484975499ad02ecdd1594308a458"},
   "sax_map": {:hex, :sax_map, "1.0.1", "51a9382d741504c34d49118fb36d691c303d042e1da88f8edae8ebe75fe74435", [:mix], [{:saxy, "~> 1.0", [hex: :saxy, repo: "hexpm", optional: false]}], "hexpm", "a7c57c25d23bfc3ce93cf93400dcfb447fe463d27ee8c6913545161e78dc487a"},
   "saxy": {:hex, :saxy, "1.5.0", "0141127f2d042856f135fb2d94e0beecda7a2306f47546dbc6411fc5b07e28bf", [:mix], [], "hexpm", "ea7bb6328fbd1f2aceffa3ec6090bfb18c85aadf0f8e5030905e84235861cf89"},
   "sweet_xml": {:hex, :sweet_xml, "0.6.6", "fc3e91ec5dd7c787b6195757fbcf0abc670cee1e4172687b45183032221b66b8", [:mix], [], "hexpm", "2e1ec458f892ffa81f9f8386e3f35a1af6db7a7a37748a64478f13163a1f3573"},
   "xlsxir": {:hex, :xlsxir, "1.6.4", "d1e69439cbd9edc1190950f9f883ac364e1f31641e0395ccdb27761791b169a3", [:mix], [{:erlsom, "~> 1.5", [hex: :erlsom, repo: "hexpm", optional: false]}], "hexpm", "38e91f65eb8a4c8dea07d941c8b7e21baf8c8d4938232395c9ffd19d2eb071f2"},
+  "xml_builder": {:hex, :xml_builder, "2.1.4", "e60e21c0a39b9dd8dec1db5a2525c713f7fe4e85ed247caedf22a9bcdd2d5069", [:mix], [], "hexpm", "48188a4df8b9168ceb8318d128299bce064d272e18967349b2592347c434e677"},
 }
