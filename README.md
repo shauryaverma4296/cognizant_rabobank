@@ -47,7 +47,9 @@ Check the container is up and running
 docker container ps
 ```
 To check the logs for the container 
-
+```bash
+docker-compose logs <service_name>
+```
 
 Later to exec or go inside the docker container
 ```bash
