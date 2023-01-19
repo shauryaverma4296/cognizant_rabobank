@@ -18,13 +18,13 @@ The above implementation is being achieved using GenServer which is one of the m
 Please refer to the [commit](https://github.com/shauryaverma4296/cognizant_rabobank/commit/ffb20b0ab941c9f81dc2390d830b93dbb35d7963) to check out the implementation.
 
 The business logic is sitting inside `./apps/lib/app.ex` 
-- The Genserver will call the function generate_report/1 to generate the report.
-    - Later, down the road validate_file_data/1 function will invoke. Which do the following
-        - Reads raw data from the file (.csv or .xml). Function get_raw_data/2
-        - Creates generic data apply the business logic. Function get_generic_data/2 -> generic_data_csv/2 & generic_data_csv/2
-        - Apply the business logic. Function validate_end_balance/1 & validate_unique_refernce/2
-        - Return the new data set. Function get_error_data_set/1
-        - Write the data set into the file. Function write_data_csv/3 & write_data_xml/3
+- The Genserver will call the function `generate_report/1` to generate the report.
+    - Later, down the road `validate_file_data/1` function will invoke. Which do the following
+        - Reads raw data from the file (.csv or .xml). Function `get_raw_data/2`
+        - Creates generic data apply the business logic. Function `get_generic_data/2` -> `generic_data_csv/2` & `generic_data_csv/2`
+        - Apply the business logic. Function `validate_end_balance/1` & `validate_unique_refernce/2`
+        - Return the new data set. Function `get_error_data_set/1`
+        - Write the data set into the file. Function `write_data_csv/3` & `write_data_xml/3`
 
 ```elixir
 
