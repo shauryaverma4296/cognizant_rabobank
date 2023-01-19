@@ -19,6 +19,7 @@ WORKDIR /source/apps
 
 # Install the dependencies and compile the application
 RUN mix do local.hex --force, local.rebar --force, deps.get, deps.compile
+
 # Run the application
 # CMD ["mix", "run", "--no-halt"]
 CMD tail -f /var/log/alternatives.log
