@@ -287,17 +287,7 @@ defmodule Apps do
     list
   end
 
-  @spec generate_report :: :ok | list
-  def generate_report() do
-    #  get all files within a dir
-
-    files_found = Path.wildcard("./files/*")
-    files = Enum.filter(files_found, fn file -> !String.contains?(file, @formatted_name) end)
-
-    if Enum.empty?(files) do
-      Logger.info("No files found.")
-    else
-      Enum.map(files, &validate_file_data?(&1))
-    end
+  def generate_report(files) do
+    Enum.map(files, &validate_file_data?(&1))
   end
 end
