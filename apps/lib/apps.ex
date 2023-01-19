@@ -1,34 +1,21 @@
 defmodule Apps do
-  # use CSV
-  require Logger
-
   @moduledoc """
-  Documentation for `Apps`.
+    Application logic sits inside the App module.
+    - The Genserver will call the function generate_report/1 to generate the report.
+    - Later, down the road validate_file_data/1 function will invoke. Which do the following
+        - Reads raw data from the file (.csv or .xml). Function get_raw_data/2
+        - Creates generic data apply the business logic. Function get_generic_data/2 -> generic_data_csv/2 & generic_data_csv/2
+        - Apply the business logic. Function validate_end_balance/1 & validate_unique_refernce/2
+        - Return the new data set. Function get_error_data_set/1
+        - Write the data set into the file. Function write_data_csv/3 & write_data_xml/3
   """
+
+  require Logger
+  import Apps.Utils
+
   @extension_whitelist ~w(.csv .xml)
-  @header ~w(accountNumber description endBalance mutation reason reference startBalance)
   @formatted_name "final"
 
-  defp get_ext(file) do
-    file
-    |> Path.extname()
-    |> String.downcase()
-  end
-
-  def get_file_name(file) do
-    file
-    |> Path.basename()
-    |> String.split(".")
-    |> List.first()
-  end
-
-  @spec validate_files?(
-          binary
-          | maybe_improper_list(
-              binary | maybe_improper_list(any, binary | []) | char,
-              binary | []
-            )
-        ) :: boolean
   def validate_files?(file) do
     file_extension = get_ext(file)
 
@@ -44,7 +31,7 @@ defmodule Apps do
             )
         ) :: nil | :ok | list
   def validate_file_data?(file) do
-    #  for every file this fn will execute
+    #  For every file this function will execute
     if validate_files?(file) do
       file_extension = file |> get_ext()
 
@@ -77,47 +64,53 @@ defmodule Apps do
 
       case file_extension do
         ".csv" ->
-          Logger.info("Writing #{file_extension} data")
-
-          data_to_render =
-            data_with_error
-            |> conver_keys_to_string()
-            |> convert_binary_string_in_list()
-
-          file_to_write = File.open!(file_path, [:write, :utf8])
-
-          data_to_render |> CSV.encode() |> Enum.each(&IO.write(file_to_write, &1))
-
-          File.close(file_to_write)
-
-          Logger.info("#{file_path} is ready with the data")
-
+          data_with_error |> write_data_csv(file_path, file_extension)
         ".xml" ->
-          Logger.info("Writing #{file_extension} data")
-
-          xml_data_impure =
-            Enum.map(data_with_error, fn xml_data -> MapToXml.from_map(xml_data) end)
-
-          second_element = xml_data_impure |> Enum.at(1)
-
-          new_second_element =
-            String.replace(second_element, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "")
-
-          pure_xml = List.replace_at(xml_data_impure, 1, new_second_element)
-
-          pure_xml_string = pure_xml |> Enum.join(",")
-
-          File.write(file_path, pure_xml_string)
-
-          Logger.info("Finished writing #{file_extension} data")
-          Logger.info("#{file_path} is ready with the data")
-
+          data_with_error |> write_data_xml(file_path, file_extension)
         _ ->
           Logger.info("The extension is not supported")
       end
     else
       Logger.info("File Extension not supported")
     end
+  end
+
+  def write_data_csv(data_with_error, file_path, file_extension) do
+    Logger.info("Writing #{file_extension} data")
+
+    data_to_render =
+      data_with_error
+      |> conver_keys_to_string()
+      |> convert_binary_string_in_list()
+
+    file_to_write = File.open!(file_path, [:write, :utf8])
+
+    data_to_render |> CSV.encode() |> Enum.each(&IO.write(file_to_write, &1))
+
+    File.close(file_to_write)
+
+    Logger.info("#{file_path} is ready to view with the data")
+  end
+
+  def write_data_xml(data_with_error, file_path, file_extension) do
+    Logger.info("Writing #{file_extension} data")
+
+    xml_data_impure =
+      Enum.map(data_with_error, fn xml_data -> MapToXml.from_map(xml_data) end)
+
+    second_element = xml_data_impure |> Enum.at(1)
+
+    new_second_element =
+      String.replace(second_element, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "")
+
+    pure_xml = List.replace_at(xml_data_impure, 1, new_second_element)
+
+    pure_xml_string = pure_xml |> Enum.join(",")
+
+    File.write(file_path, pure_xml_string)
+
+    Logger.info("Finished writing #{file_extension} data")
+    Logger.info("#{file_path} is ready to view with the data")
   end
 
   def conver_keys_to_string(list) do
@@ -174,6 +167,7 @@ defmodule Apps do
     Enum.filter(data_set, fn map -> Map.has_key?(map, :reason) end)
   end
 
+  # this is the beauty of pattern matching in elixir
   @spec get_raw_data(any, any) :: :ok | list | {:error, Saxy.ParseError.t()} | {:ok, map}
   def get_raw_data(file, ".csv") do
     stream_data = CSV.decode(File.stream!(file), headers: true) |> Enum.to_list()
@@ -193,9 +187,8 @@ defmodule Apps do
   def get_raw_data(_, ext) do
     Logger.info("#{ext} is not supported. Please provide the csv or xml files.")
   end
+  # end of this beauty
 
-  # @spec get_generic_data(map, ext) :: map
-  @spec get_generic_data(map, any) :: map
   def get_generic_data(val, ext) do
     keys = Map.keys(val)
 
@@ -241,50 +234,6 @@ defmodule Apps do
           Map.put(acc, key, value)
       end
     end)
-  end
-
-  @spec first_letter_small(binary) :: binary
-  def first_letter_small(string) do
-    first_letter = String.first(string)
-
-    rest_of_string = String.slice(string, 1..String.length(string))
-    downcased_first_letter = String.downcase(first_letter)
-    rest_of_string_without_space = Regex.replace(~r/\s+/, rest_of_string, "")
-    downcased_first_letter <> rest_of_string_without_space
-  end
-
-  def raw_binary_to_string(raw) do
-    codepoints = String.codepoints(raw)
-
-    val =
-      Enum.reduce(
-        codepoints,
-        fn w, result ->
-          cond do
-            String.valid?(w) ->
-              result <> w
-
-            true ->
-              <<parsed::8>> = w
-              result <> <<parsed::utf8>>
-          end
-        end
-      )
-
-    val
-  end
-
-  def convert_binary_string_in_list(list) do
-    list =
-      Enum.map(list, fn row ->
-        Enum.map(row, fn item ->
-          case item do
-            binary when is_binary(binary) -> raw_binary_to_string(binary)
-            _ -> item
-          end
-        end)
-      end)
-    list
   end
 
   def generate_report(files) do
