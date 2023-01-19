@@ -7,9 +7,13 @@ defmodule Apps.Application do
 
   @impl true
   def start(_type, _args) do
+
+    import Supervisor.Spec
+
     children = [
       # Starts a worker by calling: Apps.Worker.start_link(arg)
       # {Apps.Worker, arg}
+      worker(Apps.Server, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
