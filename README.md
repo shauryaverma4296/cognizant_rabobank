@@ -45,16 +45,16 @@ docker-compose up --build -d
 ```
 Check the container is up and running 
 ```bash
-docker container ps
+docker-compose ps
 ```
 To check the logs for the container 
 ```bash
-docker-compose logs <service_name>
+docker logs <name>
 ```
 
 Later to exec or go inside the docker container
 ```bash
-docker exec -it <container_name> bash
+docker exec -it <name> bash
 ```
 
 To stop the container
