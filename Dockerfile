@@ -22,7 +22,7 @@ RUN mix do local.hex --force, local.rebar --force, deps.get, deps.compile
 
 # Run the application
 # CMD ["mix", "run", "--no-halt"]
-CMD tail -f /var/log/alternatives.log
+# CMD tail -f /var/log/alternatives.log
 # CMD [ "ls", "-al" ]
 # CMD tail -f mix.exs
-# CMD ["iex", "-S", "mix"]
+CMD ["iex", "-S", "mix"]
